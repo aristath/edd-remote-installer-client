@@ -34,11 +34,7 @@ var eddRI = {
 
 		jQuery( '.edd-ri-action' ).on( 'click', function( e ) {
 			self.ajaxCall( e, {
-
-				// action: 'edd_ri_check_license'
-				// action: 'edd_ri_activate_license'
-				action: 'edd_ri_deactivate_license'
-
+				action: 'edd_ri_activate_license'
 			} );
 		} );
 	},
@@ -50,7 +46,7 @@ var eddRI = {
 			} );
 
 		jQuery.post( ajaxurl, data, function( response ) {
-			console.log( response );
+			jQuery( 'button.edd-ri-install' ).attr( 'data-license', jQuery( 'input.edd-ri-license' ).val() );
 		} );
 	}
 };

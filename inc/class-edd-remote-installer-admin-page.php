@@ -141,8 +141,7 @@ class EDD_Remote_Installer_Admin_Page {
 	private function the_actions( $product = array() ) {
 
 		// The option-name we'll be using for licences etc.
-		$option_name = 'edd_ri_' . $this->args['slug'];
-		$options     = get_option( $option_name, array() );
+		$option_name = sanitize_key( str_replace( array( ' ', '-' ), '_', trim( $product['slug'] ) ) );
 
 		// Build the buy link.
 		$buy_url = add_query_arg(
@@ -154,23 +153,35 @@ class EDD_Remote_Installer_Admin_Page {
 		);
 
 		// Build the install button.
-		$install_button_args = array(
-			'class'        => 'button button-primary edd-ri-install',
-			'data-apiUri'  => trailingslashit( $this->args['api_url'] ),
-			'data-slug'    => $product['slug'],
-			'data-buyUri'  => esc_url_raw( $buy_url ),
-			'data-license' => '',
-			// 'data-action'  => 'edd_ri_check_license'
-			// 'data-action'  => 'edd_ri_activate_license',
-			'data-action'  => 'edd_ri_deactivate_license',
-			'data-option'  => sanitize_key( $option_name ),
+		$button_args = array(
+			'class'            => 'button button-primary edd-ri-install',
+			'data-api_uri'     => trailingslashit( $this->args['api_url'] ),
+			'data-slug'        => $product['slug'],
+			'data-option_slug' => $option_name,
+			'data-item_name'   => $product['title'],
+			'data-buy_uri'     => esc_url_raw( $buy_url ),
+			'data-license'     => get_option( 'edd_ri_' . $option_name . '_license', '' ),
 		);
-		$install_button  = '<button';
-		foreach ( $install_button_args as $key => $value ) {
-			$install_button .= ' ' . $key . '="' . $value . '"';
-		}
-		$install_button .= '>' . esc_attr__( 'Install', 'eddri' ) . '</button>';
 
-		echo $install_button;
+		// The button.
+		$this->the_button( $button_args, esc_attr__( 'Download', 'eddri' ) );
+	}
+
+	/**
+	 * Renders a button.
+	 *
+	 * @access private
+	 * @since 1.0
+	 * @param array  $attrs The button attributes.
+	 * @param string $text  The button text.
+	 * @return void
+	 */
+	private function the_button( $args, $text ) {
+		$button = '<button';
+		foreach ( $args as $key => $value ) {
+			$button .= ' ' . $key . '="' . $value . '"';
+		}
+		$button .= '>' . $text . '</button>';
+		echo $button; // WPCS: XSS ok.
 	}
 }
