@@ -125,6 +125,7 @@ class EDD_Remote_Installer_Admin_Page {
 					<a class="edd-ri-buy-now button button-secondary"><?php esc_attr_e( 'Buy Now', 'eddri' ); ?></a>
 					<a class="edd-ri-action button button-primary"><?php esc_attr_e( 'Register & Install', 'eddri' ); ?></a>
 				</p>
+				<p class="edd-ri-result"></p>
 			</div>
 		</div>
 		<?php

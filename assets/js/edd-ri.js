@@ -77,7 +77,7 @@ var eddRI = {
 			jQuery.post( ajaxurl, data, function( response ) {
 
 				if ( response.success ) {
-					self.success();
+					self.success( response );
 					return;
 				}
 				self.fail( response );
@@ -89,19 +89,34 @@ var eddRI = {
 	 * Action that runs on success.
 	 *
 	 * @since 1.0
+	 * @param {Object} response - The response we got from the server.
 	 * @returns {void}
 	 */
-	success: function() {
+	success: function( response ) {
 		jQuery( 'button.edd-ri-install' ).attr( 'data-license', jQuery( 'input.edd-ri-license' ).val() );
+
+		var $resultP = jQuery( '.edd-ri-result' );
+		if ( response.message ) {
+			$resultP.html( response.message );
+		}
+		$resultP.removeClass( 'fail' );
+		$resultP.addClass( 'success' );
 	},
 
 	/**
 	 * Action that runs on fail.
 	 *
 	 * @since 1.0
+	 * @param {Object} response - The response we got from the server.
 	 * @returns {void}
 	 */
 	fail: function( response ) {
+		var $resultP = jQuery( '.edd-ri-result' );
+		if ( response.message ) {
+			$resultP.html( response.message );
+		}
+		$resultP.removeClass( 'success' );
+		$resultP.addClass( 'fail' );
 		console.log( response );
 	}
 };
