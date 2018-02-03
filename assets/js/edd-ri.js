@@ -12,6 +12,7 @@ var eddRI = {
 		self.openOverlay();
 		self.closeOverlay();
 		self.activateButton();
+		self.installButton();
 	},
 
 	/**
@@ -54,6 +55,7 @@ var eddRI = {
 			// Add the data we need to the primary button.
 			_.each( data, function( value, key ) {
 				jQuery( '.button.edd-ri-action' ).attr( 'data-' + key, value );
+				jQuery( '.button.edd-ri-install' ).attr( 'data-' + key, value );
 			} );
 		} );
 	},
@@ -72,6 +74,33 @@ var eddRI = {
 				data = jQuery.extend( {}, $target.data(), {
 					license: jQuery( 'input.edd-ri-license' ).val(),
 					action: 'edd_ri_activate_license'
+				} );
+
+			jQuery.post( ajaxurl, data, function( response ) {
+
+				if ( response.success ) {
+					self.success( response );
+					return;
+				}
+				self.fail( response );
+			} );
+		} );
+	},
+
+	/**
+	 * Handles installing the plugin.
+	 *
+	 * @since 1.0
+	 * @returns {void}
+	 */
+	installButton: function() {
+		var self = this;
+
+		jQuery( '.edd-ri-install' ).on( 'click', function( e ) {
+			var $target = jQuery( e.target ),
+				data = jQuery.extend( {}, $target.data(), {
+					license: jQuery( 'input.edd-ri-license' ).val(),
+					action: 'edd_ri_install'
 				} );
 
 			jQuery.post( ajaxurl, data, function( response ) {

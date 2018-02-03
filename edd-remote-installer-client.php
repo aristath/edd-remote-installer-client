@@ -25,6 +25,9 @@ if ( ! class_exists( 'EDD_Remote_Installer_API' ) ) {
 if ( ! class_exists( 'EDD_Remote_Installer_Actions' ) ) {
 	require_once 'inc/class-edd-remote-installer-actions.php';
 }
+if ( ! class_exists( 'EDD_Remote_Installer_Plugin_Install' ) ) {
+	require_once 'inc/class-edd-remote-installer-plugin-install.php';
+}
 
 EDD_Remote_Installer::get_instance(
 	array(
@@ -36,5 +39,3 @@ EDD_Remote_Installer::get_instance(
 		'eddri_url'   => plugins_url( '', __FILE__ ),
 	)
 );
-
-new EDD_Remote_Installer_Actions();

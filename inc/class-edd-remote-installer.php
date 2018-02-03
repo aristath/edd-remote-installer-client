@@ -57,6 +57,9 @@ class EDD_Remote_Installer {
 		$api                = new EDD_Remote_Installer_API( $args );
 		$this->args['data'] = $api->get_data();
 		new EDD_Remote_Installer_Admin_Page( $this->args );
+		new EDD_Remote_Installer_Actions();
+		$plugin_installer = new EDD_Remote_Installer_Plugin_Install();
+		$plugin_installer->set_api_url( $args['api_url'] );
 	}
 
 	/**
