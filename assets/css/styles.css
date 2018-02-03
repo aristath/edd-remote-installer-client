@@ -3,63 +3,23 @@
   padding: 1rem;
   background: #fff;
   border: 1px solid #f2f2f2;
-  margin: 1rem;
-}
+  margin: 1rem; }
+  .eddri-product .thumb img {
+    max-width: 100%;
+    height: auto; }
 
-.eddri-product .thumb img {
-  max-width: 100%;
-  height: auto;
-}
-
-.edd-ri-overlay-installer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, .95);
-  z-index: 99999;
+.edd-ri-form-licensing .edd-ri-tb-form {
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  width: 100%; }
+  .edd-ri-form-licensing .edd-ri-tb-form .license {
+    width: 100%;
+    padding-right: 1em; }
+    .edd-ri-form-licensing .edd-ri-tb-form .license input {
+      width: 100%;
+      font-size: 13px;
+      line-height: 26px;
+      height: 28px;
+      margin: 0;
+      padding: 0 10px 1px; }
 
-.edd-ri-overlay-installer.hidden {
-  display: none;
-}
-
-.edd-ri-overlay-installer .inner {
-  width: 90%;
-  max-width: 60em;
-}
-
-.edd-ri-overlay-installer .inner h2 {
-  font-size: 2rem;
-  font-weight: 300;
-}
-
-.edd-ri-overlay-installer .inner p {
-  font-size: 1rem;
-}
-
-.edd-ri-overlay-installer .inner .edd-ri-license {
-  width: 100%;
-  padding: 1rem;
-  font-size: 1.5rem;
-}
-
-.edd-ri-overlay-installer .centered {
-  text-align: center;
-}
-
-.edd-ri-close-overlay {
-  text-decoration: none;
-  color: #666;
-  padding: .6em 2em;
-  border: 1px solid #dedede;
-  border-radius: 2em;
-}
-
-.edd-ri-close-overlay .dashicons {
-  font-size: 1em;
-}
+/*# sourceMappingURL=styles.css.map */

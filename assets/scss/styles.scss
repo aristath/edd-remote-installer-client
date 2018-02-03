@@ -1,0 +1,35 @@
+.eddri-product {
+  max-width: 300px;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #f2f2f2;
+  margin: 1rem;
+
+  .thumb {
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+}
+
+.edd-ri-form-licensing {
+  .edd-ri-tb-form {
+    display: flex;
+    width: 100%;
+
+    .license {
+      width: 100%;
+      padding-right: 1em;
+
+      input {
+        width: 100%;
+        font-size: 13px;
+        line-height: 26px;
+        height: 28px;
+        margin: 0;
+        padding: 0 10px 1px;
+      }
+    }
+  }
+}

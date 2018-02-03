@@ -9,55 +9,7 @@ var eddRI = {
 	init: function() {
 		var self = this;
 
-		self.openOverlay();
-		self.closeOverlay();
-		self.activateButton();
-		self.installButton();
-	},
-
-	/**
-	 * Closes the overlay when the "Close" button is clicked.
-	 *
-	 * @since 1.0
-	 * @returns {void}
-	 */
-	closeOverlay: function() {
-		jQuery( '.edd-ri-close-overlay' ).on( 'click', function( e ) {
-			e.preventDefault();
-			jQuery( '.edd-ri-overlay-installer' ).addClass( 'hidden' );
-		} );
-	},
-
-	/**
-	 * Open the overlay.
-	 *
-	 * @since 1.0
-	 * @returns {void}
-	 */
-	openOverlay: function() {
-
-		// Open the overlay and add any properties necessary in there.
-		jQuery( 'button.edd-ri-install' ).on( 'click', function( e ) {
-			var $button = jQuery( e.target ),
-				data = $button.data(),
-				$input = jQuery( 'input.edd-ri-license' );
-
-			jQuery( '.edd-ri-overlay-installer' ).removeClass( 'hidden' );
-
-			// Empty the input field at first.
-			$input.attr( 'value', '' );
-
-			// If we've got a license saved, add it.
-			if ( data.license ) {
-				$input.attr( 'value', data.license );
-			}
-
-			// Add the data we need to the primary button.
-			_.each( data, function( value, key ) {
-				jQuery( '.button.edd-ri-action' ).attr( 'data-' + key, value );
-				jQuery( '.button.edd-ri-install' ).attr( 'data-' + key, value );
-			} );
-		} );
+		self.buttonHandler();
 	},
 
 	/**
@@ -66,50 +18,22 @@ var eddRI = {
 	 * @since 1.0
 	 * @returns {void}
 	 */
-	activateButton: function() {
+	buttonHandler: function() {
 		var self = this;
 
-		jQuery( '.edd-ri-action' ).on( 'click', function( e ) {
-			var $target = jQuery( e.target ),
-				data = jQuery.extend( {}, $target.data(), {
-					license: jQuery( 'input.edd-ri-license' ).val(),
-					action: 'edd_ri_activate_license'
+		jQuery( '.edd-ri-button' ).on( 'click', function( event ) {
+			var $target = jQuery( event.target ),
+				data    = jQuery.extend( {}, $target.data(), {
+					license: jQuery( 'input.edd-ri-license[data-slug="' + $target.data( 'slug' ) + '"]' ).val()
 				} );
 
 			jQuery.post( ajaxurl, data, function( response ) {
 
 				if ( response.success ) {
-					self.success( response );
+					self.success( response, data );
 					return;
 				}
-				self.fail( response );
-			} );
-		} );
-	},
-
-	/**
-	 * Handles installing the plugin.
-	 *
-	 * @since 1.0
-	 * @returns {void}
-	 */
-	installButton: function() {
-		var self = this;
-
-		jQuery( '.edd-ri-install' ).on( 'click', function( e ) {
-			var $target = jQuery( e.target ),
-				data = jQuery.extend( {}, $target.data(), {
-					license: jQuery( 'input.edd-ri-license' ).val(),
-					action: 'edd_ri_install'
-				} );
-
-			jQuery.post( ajaxurl, data, function( response ) {
-
-				if ( response.success ) {
-					self.success( response );
-					return;
-				}
-				self.fail( response );
+				self.fail( response, data );
 			} );
 		} );
 	},
@@ -119,17 +43,12 @@ var eddRI = {
 	 *
 	 * @since 1.0
 	 * @param {Object} response - The response we got from the server.
+	 * @param {Object} data - The data that was passed-on to the AJAX call.
 	 * @returns {void}
 	 */
-	success: function( response ) {
-		jQuery( 'button.edd-ri-install' ).attr( 'data-license', jQuery( 'input.edd-ri-license' ).val() );
-
-		var $resultP = jQuery( '.edd-ri-result' );
-		if ( response.message ) {
-			$resultP.html( response.message );
-		}
-		$resultP.removeClass( 'fail' );
-		$resultP.addClass( 'success' );
+	success: function( response, data ) {
+		console.log( data );
+		console.log( response );
 	},
 
 	/**
@@ -137,15 +56,11 @@ var eddRI = {
 	 *
 	 * @since 1.0
 	 * @param {Object} response - The response we got from the server.
+	 * @param {Object} data - The data that was passed-on to the AJAX call.
 	 * @returns {void}
 	 */
-	fail: function( response ) {
-		var $resultP = jQuery( '.edd-ri-result' );
-		if ( response.message ) {
-			$resultP.html( response.message );
-		}
-		$resultP.removeClass( 'success' );
-		$resultP.addClass( 'fail' );
+	fail: function( response, data ) {
+		console.log( data );
 		console.log( response );
 	}
 };

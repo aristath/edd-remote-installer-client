@@ -31,11 +31,12 @@ if ( ! class_exists( 'EDD_Remote_Installer_Plugin_Install' ) ) {
 
 EDD_Remote_Installer::get_instance(
 	array(
-		'api_url'     => 'https://presscodes.com',
-		'slug'        => 'presscodes',
+		'api_url'      => 'https://presscodes.com',
+		'slug'         => 'presscodes',
 		/* translators: PressCodes (company name). */
-		'title'       => sprintf( esc_attr__( '%s Products', 'eddri' ), 'PressCodes' ),
-		'permissions' => 'manage_options',
-		'eddri_url'   => plugins_url( '', __FILE__ ),
+		'title'        => sprintf( esc_attr__( '%s Products', 'eddri' ), 'PressCodes' ),
+		'permissions'  => 'manage_options',
+		'eddri_url'    => plugins_url( '', __FILE__ ),
+		'account_page' => 'https://presscodes.com/account/'
 	)
 );

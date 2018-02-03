@@ -1,0 +1,29 @@
+{
+  "name": "edd-remote-installer-client",
+  "version": "3.0.21",
+  "author": "Aristeides Stathopoulos",
+  "homepage": "https://aristath.github.io/edd-remote-installer-client",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aristath/edd-remote-installer-client"
+  },
+  "bugs": {
+    "url": "https://github.com/aristath/edd-remote-installer-client/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-sass": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-wp-readme-to-markdown": "*"
+  }
+}
