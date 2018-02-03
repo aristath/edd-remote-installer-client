@@ -1,0 +1,29 @@
+{
+  "name": "aristath/edd-remote-installer-client",
+  "type": "library",
+  "keywords": ["WordPress", "Easy Digital Downloads", "EDD", "Licensing"],
+  "description": "Client-side plugin that allows downloading and installing plugins from an EDD site.",
+  "homepage": "https://aristath.github.io/edd-remote-installer-client",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "aristath",
+      "email": "aristath@gmail.com",
+      "homepage": "https://aristath.github.io",
+      "role":"Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.2",
+    "php-coveralls/php-coveralls": "*",
+    "phpunit/phpunit": "*"
+  },
+  "require-dev": {
+    "composer/installers": "*",
+    "phpunit/phpunit": "*",
+    "dealerdirect/phpcodesniffer-composer-installer": "*",
+    "wimg/php-compatibility": "*",
+    "wp-coding-standards/wpcs": "*",
+    "codacy/coverage": "dev-master"
+  }
+}

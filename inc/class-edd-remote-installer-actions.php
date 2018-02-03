@@ -17,35 +17,37 @@
  */
 class EDD_Remote_Installer_Actions {
 
+	/**
+	 * Constructor.
+	 *
+	 * @since 1.0
+	 * @access public
+	 */
 	public function __construct() {
 		add_action( 'wp_ajax_edd_ri_activate_license', array( $this, 'activate_license' ) );
 	}
-
-    /**
-     * Sanitize a license.
-     *
-     * @access public
-     * @param string $key The license key.
-     * @return string
-     */
-    public function sanitize_license( $key ) {
-        return esc_attr( trim( $key ) );
-    }
 
 	/**
 	 * Activates a license.
 	 *
 	 * @access public
+	 * @since 1.0
 	 */
 	public function activate_license() {
 
+		// Security check.
+		if ( ! isset( $_POST['nonce'] ) ) {
+			return;
+		}
+		check_ajax_referer( 'edd_ri', 'nonce' );
+
 		// Listen for our activate button to be clicked.
-		if ( ! isset( $_POST['action'] ) || 'edd_ri_activate_license' !== esc_attr( wp_unslash( $_POST['action'] ) ) ) {
+		if ( ! isset( $_POST['action'] ) || 'edd_ri_activate_license' !== sanitize_key( wp_unslash( $_POST['action'] ) ) ) {
 			return;
 		}
 
-		$license   = ( isset( $_POST['license'] ) ) ? $this->sanitize_license( wp_unslash( $_POST['license'] ) ) : '';
-		$item_name = ( isset( $_POST['item_name'] ) ) ? esc_attr( wp_unslash( $_POST['item_name'] ) ) : '';
+		$license   = ( isset( $_POST['license'] ) ) ? trim( sanitize_key( $_POST['license'] ) ) : '';
+		$item_name = ( isset( $_POST['item_name'] ) ) ? sanitize_text_field( wp_unslash( $_POST['item_name'] ) ) : '';
 		$api_url   = ( isset( $_POST['api_uri'] ) ) ? esc_url_raw( wp_unslash( $_POST['api_uri'] ) ) : '';
 
 		// Call the custom API.
@@ -102,12 +104,29 @@ class EDD_Remote_Installer_Actions {
 
 		// Check if anything passed on a message constituting a failure.
 		if ( ! empty( $message ) ) {
-			exit();
+			wp_send_json_success(
+				array(
+					'message' => $message,
+					'status'  => 'fail',
+				)
+			);
+			wp_die();
 		}
 
-		// $license_data->license will be either "valid" or "invalid".
-		update_option( 'edd_ri_' . wp_unslash( $_POST['option_slug'] ) . '_license_status', $license_data->license );
-		update_option( 'edd_ri_' . wp_unslash( $_POST['option_slug'] ) . '_license', $license );
-		exit();
+		if ( isset( $_POST['option_slug'] ) ) {
+
+			$option_slug = sanitize_key( wp_unslash( $_POST['option_slug'] ) );
+
+			// $license_data->license will be either "valid" or "invalid".
+			update_option( "edd_ri_{$option_slug}_license_status", $license_data->license );
+			update_option( "edd_ri_{$option_slug}_license", $license );
+			wp_send_json_success(
+				array(
+					'message' => esc_attr__( 'Success', 'eddri' ),
+					'status'  => 'success',
+				)
+			);
+		}
+		wp_die();
 	}
 }

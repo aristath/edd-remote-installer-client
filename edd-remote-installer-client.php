@@ -14,25 +14,27 @@
  */
 
 if ( ! class_exists( 'EDD_Remote_Installer' ) ) {
-    require_once 'inc/class-edd-remote-installer.php';
+	require_once 'inc/class-edd-remote-installer.php';
 }
 if ( ! class_exists( 'EDD_Remote_Installer_Admin_Page' ) ) {
-    require_once 'inc/class-edd-remote-installer-admin-page.php';
+	require_once 'inc/class-edd-remote-installer-admin-page.php';
 }
 if ( ! class_exists( 'EDD_Remote_Installer_API' ) ) {
-    require_once 'inc/class-edd-remote-installer-api.php';
+	require_once 'inc/class-edd-remote-installer-api.php';
 }
 if ( ! class_exists( 'EDD_Remote_Installer_Actions' ) ) {
-    require_once 'inc/class-edd-remote-installer-actions.php';
+	require_once 'inc/class-edd-remote-installer-actions.php';
 }
 
-EDD_Remote_Installer::get_instance( array(
-    'api_url'     => 'https://presscodes.com',
-    'slug'        => 'presscodes',
-    /* translators: PressCodes (company name). */
-    'title'       => sprintf( esc_attr__( '%s Products', 'eddri' ), 'PressCodes' ),
-    'permissions' => 'manage_options',
-	'eddri_url'   => plugins_url( '', __FILE__ ),
-) );
+EDD_Remote_Installer::get_instance(
+	array(
+		'api_url'     => 'https://presscodes.com',
+		'slug'        => 'presscodes',
+		/* translators: PressCodes (company name). */
+		'title'       => sprintf( esc_attr__( '%s Products', 'eddri' ), 'PressCodes' ),
+		'permissions' => 'manage_options',
+		'eddri_url'   => plugins_url( '', __FILE__ ),
+	)
+);
 
 new EDD_Remote_Installer_Actions();

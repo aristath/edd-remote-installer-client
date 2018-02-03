@@ -17,38 +17,38 @@
  */
 class EDD_Remote_Installer_Admin_Page {
 
-    /**
-     * Instance arguments.
-     *
-     * @access private
-     * @since 1.0
-     * @var array
-     */
-    private $args = array();
+	/**
+	 * Instance arguments.
+	 *
+	 * @access private
+	 * @since 1.0
+	 * @var array
+	 */
+	private $args = array();
 
-    /**
-     * Constructor.
-     *
-     * @access public
-     * @since 1.0
-     * @param array $args The arguments required to init the object.
-     */
-    public function __construct( $args ) {
-        $this->args = $args;
-        add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+	/**
+	 * Constructor.
+	 *
+	 * @access public
+	 * @since 1.0
+	 * @param array $args The arguments required to init the object.
+	 */
+	public function __construct( $args ) {
+		$this->args = $args;
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-    }
+	}
 
-    /**
-     * Add the admin menu.
-     *
-     * @access public
-     * @since 1.0
-     * @return void
-     */
-    public function admin_menu() {
-        add_options_page( $this->args['title'], $this->args['title'], $this->args['permissions'], $this->args['slug'], array( $this, 'page_content' ) );
-    }
+	/**
+	 * Add the admin menu.
+	 *
+	 * @access public
+	 * @since 1.0
+	 * @return void
+	 */
+	public function admin_menu() {
+		add_options_page( $this->args['title'], $this->args['title'], $this->args['permissions'], $this->args['slug'], array( $this, 'page_content' ) );
+	}
 
 	/**
 	 * Add scripts and styles.
@@ -62,14 +62,14 @@ class EDD_Remote_Installer_Admin_Page {
 		wp_enqueue_script( 'edd_ri_admin_js', trailingslashit( $this->args['eddri_url'] ) . 'assets/js/edd-ri.js', array( 'jquery', 'underscore' ), time(), true );
 	}
 
-    /**
-     * The page contents.
-     *
-     * @since 1.0
-     * @access public
-     * @return void
-     */
-    public function page_content() {
+	/**
+	 * The page contents.
+	 *
+	 * @since 1.0
+	 * @access public
+	 * @return void
+	 */
+	public function page_content() {
 		?>
 		<div class="wrap">
 			<h2><?php echo esc_attr( $this->args['title'] ); ?></h2>
@@ -96,10 +96,10 @@ class EDD_Remote_Installer_Admin_Page {
 							</div>
 							<h4><?php echo esc_html( $product['info']['title'] ); ?></h4>
 							<div class="actions">
-                                <?php
-                                // Add buttons.
-                                $this->the_actions( $product['info'] );
-                                ?>
+								<?php
+								// Add buttons.
+								$this->the_actions( $product['info'] );
+								?>
 							</div>
 						</div>
 					<?php endforeach; ?>
@@ -161,6 +161,7 @@ class EDD_Remote_Installer_Admin_Page {
 			'data-item_name'   => $product['title'],
 			'data-buy_uri'     => esc_url_raw( $buy_url ),
 			'data-license'     => get_option( 'edd_ri_' . $option_name . '_license', '' ),
+			'data-nonce'       => wp_create_nonce( 'edd_ri' ),
 		);
 
 		// The button.
@@ -176,9 +177,9 @@ class EDD_Remote_Installer_Admin_Page {
 	 * @param string $text  The button text.
 	 * @return void
 	 */
-	private function the_button( $args, $text ) {
+	private function the_button( $attrs, $text ) {
 		$button = '<button';
-		foreach ( $args as $key => $value ) {
+		foreach ( $attrs as $key => $value ) {
 			$button .= ' ' . $key . '="' . $value . '"';
 		}
 		$button .= '>' . $text . '</button>';
