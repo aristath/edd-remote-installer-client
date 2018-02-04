@@ -56,7 +56,7 @@ class EDD_Remote_Installer_Admin_Page {
 	 * @return void
 	 */
 	public function admin_menu() {
-		add_options_page( $this->args['title'], $this->args['title'], $this->args['permissions'], $this->args['slug'], array( $this, 'page_content' ) );
+		add_plugins_page( $this->args['title'], $this->args['title'], $this->args['permissions'], $this->args['slug'], array( $this, 'page_content' ) );
 	}
 
 	/**
@@ -101,10 +101,22 @@ class EDD_Remote_Installer_Admin_Page {
 									<a class="button button-primary thickbox" href="#TB_inline?width=600&height=300&inlineId=edd-ri-tb-<?php echo esc_attr( $product['info']['slug'] ); ?>" class="thickbox">
 										<?php esc_attr_e( 'Install', 'eddri' ); ?>
 									</a>
-								<?php elseif ( $this->is_installed( $product ) && $this->is_billable( $product ) && ! $this->is_registered( $product ) ) : ?>
-									<a class="button button-primary thickbox" href="#TB_inline?width=600&height=300&inlineId=edd-ri-tb-<?php echo esc_attr( $product['info']['slug'] ); ?>" class="thickbox">
-										<?php esc_attr_e( 'Activate License', 'eddri' ); ?>
-									</a>
+								<?php else : ?>
+									<?php if ( $this->is_billable( $product ) ) : ?>
+										<?php if ( $this->is_registered( $product ) ) : ?>
+											<a class="button button-primary thickbox" href="#TB_inline?width=600&height=300&inlineId=edd-ri-tb-<?php echo esc_attr( $product['info']['slug'] ); ?>" class="thickbox">
+												<?php esc_attr_e( 'Manage License', 'eddri' ); ?>
+											</a>
+										<?php else : ?>
+											<a class="button button-primary thickbox" href="#TB_inline?width=600&height=300&inlineId=edd-ri-tb-<?php echo esc_attr( $product['info']['slug'] ); ?>" class="thickbox">
+												<?php esc_attr_e( 'Register', 'eddri' ); ?>
+											</a>
+										<?php endif; ?>
+									<?php else : ?>
+										<a class="button button-primary thickbox" href="#TB_inline?width=600&height=300&inlineId=edd-ri-tb-<?php echo esc_attr( $product['info']['slug'] ); ?>" class="thickbox">
+											<?php esc_attr_e( 'Register', 'eddri' ); ?>
+										</a>
+									<?php endif; ?>
 								<?php endif; ?>
 								<div id="edd-ri-tb-<?php echo esc_attr( $product['info']['slug'] ); ?>" class="edd-ri-tb" style="display:none;">
 									<?php if ( $this->is_billable( $product ) ) : ?>
@@ -120,7 +132,7 @@ class EDD_Remote_Installer_Admin_Page {
 												?>
 											</p>
 											<?php if ( isset( $this->args['account_page'] ) ) : ?>
-												<p class="edd-ri-deregister-text<?php echo ( ! $this->is_registered( $product ) ) ? ' hidden' : ''; ?>">
+												<p class="edd-ri-thankyou-text<?php echo ( ! $this->is_registered( $product ) ) ? ' hidden' : ''; ?>">
 													<?php
 													printf(
 														/* translators: Link to the account page where users can manage their licenses. Link text: "account". */
@@ -133,18 +145,22 @@ class EDD_Remote_Installer_Admin_Page {
 											<div class="edd-ri-tb-form">
 												<div class="license"><input type="text" class="edd-ri-license" data-slug="<?php echo esc_attr( $product['info']['slug'] ); ?>" placeholder="<?php esc_attr_e( 'Enter License Key', 'eddri' ); ?>" value="<?php echo esc_attr( $this->get_license( $product['info']['slug'] ) ); ?>"></div>
 												<div class="license-actions edd-ri-register <?php echo ( ! $this->is_registered( $product ) ) ? '' : ' hidden'; ?>">
-													<?php $this->the_button( $product, 'edd_ri_activate_license', esc_attr__( 'Register', 'eddri' ) ); ?>
+													<?php $this->the_button( $product, 'edd_ri_activate_license', esc_attr__( 'Register & Activate key', 'eddri' ) ); ?>
 												</div>
 												<div class="license-actions edd-ri-update <?php echo ( ! $this->is_registered( $product ) ) ? ' hidden' : ''; ?>">
-													<?php $this->the_button( $product, 'edd_ri_activate_license', esc_attr__( 'Update', 'eddri' ), 'secondary' ); ?>
+													<?php $this->the_button( $product, 'edd_ri_activate_license', esc_attr__( 'Update key', 'eddri' ), 'secondary' ); ?>
 												</div>
 											</div>
 											<p class="edd-ri-install-pending-text<?php echo ( ! $this->is_registered( $product ) ) ? '' : ' hidden'; ?>">
 												<?php esc_attr_e( 'Once your registration is successfully you will be able to continue with the plugin installation.', 'eddri' ); ?>
 											</p>
-											<p class="edd-ri-install-button<?php echo ( ! $this->is_registered( $product ) ) ? ' hidden' : ''; ?>">
-												<?php $this->the_button( $product, 'edd_ri_install', esc_attr__( 'Install', 'eddri' ) ); ?></div>
-											</p>
+											<?php if ( ! $this->is_installed( $product ) ) : ?>
+												<p class="edd-ri-install-button<?php echo ( ! $this->is_registered( $product ) ) ? ' hidden' : ''; ?>">
+													<?php $this->the_button( $product, 'edd_ri_install', esc_attr__( 'Install', 'eddri' ) ); ?></div>
+												</p>
+											<?php else : ?>
+												<p class="edd-ri-message-plugin-installed"><?php esc_attr_e( 'Plugin is installed.', 'eddri' ); ?></p>
+											<?php endif; ?>
 											<div class="edd-ri-response"></div>
 										</div>
 									<?php endif; ?>

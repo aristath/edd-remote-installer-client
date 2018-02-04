@@ -47,6 +47,27 @@ var eddRI = {
 	 * @returns {void}
 	 */
 	success: function( response, data ) {
+
+		// License was successfully activated.
+		if ( 'edd_ri_activate_license' === data.action ) {
+
+			// Change intro text.
+			jQuery( '.edd-ri-register-text' ).addClass( 'hidden' );
+			jQuery( '.edd-ri-thankyou-text' ).removeClass( 'hidden' );
+
+			// Switch buttons.
+			jQuery( '.license-actions.edd-ri-register' ).addClass( 'hidden' );
+			jQuery( '.license-actions.edd-ri-update' ).removeClass( 'hidden' );
+
+			// Hide the footer text & show the install button.
+			jQuery( '.edd-ri-install-pending-text' ).addClass( 'hidden' );
+			jQuery( '.edd-ri-install-button' ).removeClass( 'hidden' );
+
+		}
+
+		if ( 'edd_ri_install' === data.action ) {
+			jQuery( '.edd-ri-response' ).html( response );
+		}
 		console.log( data );
 		console.log( response );
 	},

@@ -34,7 +34,7 @@ EDD_Remote_Installer::get_instance(
 		'api_url'      => 'https://presscodes.com',
 		'slug'         => 'presscodes',
 		/* translators: PressCodes (company name). */
-		'title'        => sprintf( esc_attr__( '%s Products', 'eddri' ), 'PressCodes' ),
+		'title'        => sprintf( esc_attr__( '%s Plugins', 'eddri' ), 'PressCodes' ),
 		'permissions'  => 'manage_options',
 		'eddri_url'    => plugins_url( '', __FILE__ ),
 		'account_page' => 'https://presscodes.com/account/'
