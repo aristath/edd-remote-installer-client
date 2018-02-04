@@ -22,7 +22,7 @@ class EDD_Remote_Installer_Plugin_Install {
 	 *
 	 * @access private
 	 * @since 1.0
-	 * @param string
+	 * @var string
 	 */
 	private $api_url = '';
 
@@ -63,10 +63,12 @@ class EDD_Remote_Installer_Plugin_Install {
 	public function plugins_api( $api, $action, $args ) {
 		if ( 'plugin_information' == $action ) {
 			if ( isset( $_POST['edd_ri'] ) ) {
+				$license   = isset( $_POST['license'] ) ? sanitize_text_field( wp_unslash( $_POST['license'] ) ) : ''; // WPCS: CSRF ok.
+				$item_name = isset( $_POST['item_name'] ) ? sanitize_text_field( wp_unslash( $_POST['item_name'] ) ) : ''; // WPCS: CSRF ok.
 				$api_params = array(
 					'edd_action' => 'get_download',
-					'item_name'  => urlencode( $_POST['name'] ),
-					'license'    => isset( $_POST['license'] ) ? urlencode( $_POST['license'] ) : null,
+					'item_name'  => urlencode( $item_name ),
+					'license'    => urlencode( $license ),
 				);
 				$api = new stdClass();
 				$api->name          = $args->slug;
@@ -85,10 +87,18 @@ class EDD_Remote_Installer_Plugin_Install {
 	 */
 	public function install() {
 		$this->check_capabilities();
-		error_log(print_r($_POST,true));
-		$download      = $_POST['item_name'];
-		$license       = $_POST['license'];
-		$message       = __( 'An Error Occured', 'eddri' );
+		check_ajax_referer( 'edd_ri', 'nonce' );
+
+		$download = '';
+		$license  = '';
+
+		if ( isset( $_POST['item_name'] ) ) {
+			$download      = sanitize_text_field( wp_unslash( $_POST['item_name'] ) );
+		}
+		if ( isset( $_POST['license'] ) ) {
+			$license       = sanitize_text_field( wp_unslash( $_POST['license'] ) );
+		}
+		$message       = esc_attr__( 'An Error Occured', 'eddri' );
 		$download_type = $this->_check_download( $download );
 
 		// Throw error of the product is not free and license it empty.
@@ -163,11 +173,13 @@ class EDD_Remote_Installer_Plugin_Install {
 	private function _install_plugin( $download, $license ) {
 
 		// Build the download link.
-		$download_link = add_query_arg( array(
-			'edd_action' => 'get_download',
-			'item_name'  => urlencode( $download ),
-			'license'    => $license,
-		), $this->api_url );
+		$download_link = add_query_arg(
+			array(
+				'edd_action' => 'get_download',
+				'item_name'  => urlencode( $download ),
+				'license'    => $license,
+			), $this->api_url
+		);
 
 		// Make sure the WP-Core file is loaded.
 		if ( ! class_exists( 'Plugin_Upgrader' ) ) {
@@ -182,35 +194,34 @@ class EDD_Remote_Installer_Plugin_Install {
 	/**
 	 * Checks license against API
 	 *
-	 * @param $license
-	 * @param $download
-	 *
+	 * @param string $license  The license.
+	 * @param string $download The item-name.
 	 * @return bool
 	 */
 	private function _check_license( $license, $download ) {
 
-		// Get a response from our EDD server
+		// Get a response from our EDD server.
 		$response = wp_remote_get(
 			add_query_arg(
 				array(
 					'edd_action' => 'activate_license',
 					'license'    => $license,
-					'item_name'  => urlencode( $download )
+					'item_name'  => urlencode( $download ),
 				),
 				$this->api_url
 			),
 			array(
 				'timeout'   => 15,
-				'sslverify' => false
+				'sslverify' => false,
 			)
 		);
-		// make sure the response came back okay
+		// Make sure the response came back okay.
 		if ( is_wp_error( $response ) ) {
 			return false;
 		}
-		// decode the license data
+		// Decode the license data.
 		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-		return $license_data->license === 'valid';
+		return 'valid' === $license_data->license;
 	}
 
 	/**

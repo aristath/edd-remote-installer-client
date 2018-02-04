@@ -85,7 +85,7 @@ class EDD_Remote_Installer_Admin_Page {
 			<div class="products-wrapper">
 				<?php if ( isset( $this->args['data']['products'] ) ) : ?>
 					<?php foreach ( $this->args['data']['products'] as $product ) : ?>
-						<?php // var_dump($product);
+						<?php
 						// Skip item if we don't have info.
 						if ( ! isset( $product['info'] ) ) {
 							continue;
@@ -203,12 +203,12 @@ class EDD_Remote_Installer_Admin_Page {
 			'data-action'      => esc_attr( $action ),
 		);
 
-		// The button
+		// The button.
 		echo '<button';
 		foreach ( $attrs as $key => $value ) {
-			echo ' ' . sanitize_key( $key ) . '="' . esc_attr( $value ) . '"';
+			echo ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
 		}
-		echo '>' . sanitize_text_field( $text ) . '</button>';
+		echo '>' . esc_html( $text ) . '</button>';
 	}
 
 	/**
@@ -216,7 +216,7 @@ class EDD_Remote_Installer_Admin_Page {
 	 *
 	 * @access private
 	 * @since 1.0
-	 * @param array $product The product.
+	 * @param string $slug The product-slug.
 	 * @return string
 	 */
 	private function get_license( $slug ) {
