@@ -15,15 +15,14 @@
   ],
   "require": {
     "php": ">=5.2",
-    "php-coveralls/php-coveralls": "*",
-    "phpunit/phpunit": "*"
   },
   "require-dev": {
+    "codacy/coverage": "dev-master"
     "composer/installers": "*",
-    "phpunit/phpunit": "*",
     "dealerdirect/phpcodesniffer-composer-installer": "*",
+    "php-coveralls/php-coveralls": "*",
+    "phpunit/phpunit": "*",
     "wimg/php-compatibility": "*",
     "wp-coding-standards/wpcs": "*",
-    "codacy/coverage": "dev-master"
   }
 }
