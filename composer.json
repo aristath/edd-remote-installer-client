@@ -17,12 +17,12 @@
     "php": ">=5.2"
   },
   "require-dev": {
-    "codacy/coverage": "dev-master"
+    "codacy/coverage": "dev-master",
     "composer/installers": "*",
     "dealerdirect/phpcodesniffer-composer-installer": "*",
     "php-coveralls/php-coveralls": "*",
     "phpunit/phpunit": "*",
     "wimg/php-compatibility": "*",
-    "wp-coding-standards/wpcs": "*",
+    "wp-coding-standards/wpcs": "*"
   }
 }
